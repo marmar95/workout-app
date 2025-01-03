@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 
 
 defineOptions({
@@ -67,16 +67,7 @@ const fillWorkout = () => {
     })
   }
 }
-// const entireTime = computed(() : number => {
-//   const res = workout.value.map(x => x.workout + x.rest).reduce((accumulator, currentValue) => {
-//   return accumulator + currentValue
-//   },0);
 
-// return res
-// })
-// const isWorkout = ref(true)
-// const isRest = ref(false)
-// const entireIntervalTime = computed(() => workoutTime.value + restTime.value)
 const intervalClbk = () => {
   const { time } = workout.value[currentSetIndex.value]
   if(time > 1) {
@@ -89,12 +80,13 @@ const intervalClbk = () => {
   }
   currentSetIndex.value += 1
 }
-let interval = setInterval(intervalClbk, 1000)
+let interval : NodeJS.Timeout | null = null
 const toggleStart = (value : boolean) => {
-  currentSetIndex.value = 0
-  clearInterval(interval)
+  if(interval) clearInterval(interval)
   fillWorkout()
+  currentSetIndex.value = 0
   workoutInProgress.value = value
   if(value) interval = setInterval(intervalClbk, 1000)
 }
+onUnmounted(() => { if(interval) clearInterval(interval) })
 </script>
