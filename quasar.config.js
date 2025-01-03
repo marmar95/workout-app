@@ -70,7 +70,7 @@ module.exports = configure(function (/* ctx */) {
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
-      publicPath: '/workout-app/',
+      publicPath: '/workout-app/spa/',
 
       vitePlugins: [
         ['vite-plugin-checker', {
